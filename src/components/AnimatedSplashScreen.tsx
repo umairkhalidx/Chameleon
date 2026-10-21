@@ -11,6 +11,7 @@ import {
   useWindowDimensions,
   View,
 } from "react-native";
+import { Colors } from "../constants/colors";
 
 interface AnimatedSplashScreenProps {
   onFinish: () => void;
@@ -126,7 +127,7 @@ const styles = StyleSheet.create({
     width: CIRCLE_SIZE,
     height: CIRCLE_SIZE,
     borderRadius: CIRCLE_SIZE / 2,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: Colors.background, // Theme soft mint background
   },
 });
 
