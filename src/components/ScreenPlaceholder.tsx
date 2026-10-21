@@ -33,7 +33,7 @@ export function ScreenPlaceholder({
   iconBgColor = "#EBF5D4",
   headerTitle,
   headerTitleColor = Colors.primary,
-  headerFontWeight = "bold",
+  headerFontWeight = "black",
 }: ScreenPlaceholderProps) {
   const { width } = useWindowDimensions();
   const isTablet = width >= 768;
@@ -49,8 +49,8 @@ export function ScreenPlaceholder({
               {
                 color: headerTitleColor,
                 fontFamily: Fonts.doto[headerFontWeight],
-                fontSize: isTablet ? 32 : 26,
-                letterSpacing: isTablet ? 2.5 : 1.8,
+                fontSize: isTablet ? 40 : 33,
+                letterSpacing: isTablet ? 2.8 : 2.0,
               },
             ]}
             accessibilityRole="header"

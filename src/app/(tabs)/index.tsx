@@ -7,7 +7,7 @@ export default function ChatsScreen() {
     <ScreenPlaceholder
       headerTitle="Chameleon"
       headerTitleColor={Colors.primary}
-      headerFontWeight="extraBold"
+      headerFontWeight="black"
       title="Chats"
       subtitle="Direct messages, group conversations, and recent threads"
       badge="Messaging"

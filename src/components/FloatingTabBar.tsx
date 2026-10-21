@@ -46,7 +46,7 @@ const TAB_CONFIGS: Record<string, TabConfig> = {
 };
 
 const BAR_HEIGHT = 64;
-const PILL_WIDTH = 54;
+const PILL_WIDTH = 56;
 const PILL_HEIGHT = 44;
 const PILL_TOP = (BAR_HEIGHT - PILL_HEIGHT) / 2; // 10px: exact vertical center
 
@@ -342,12 +342,12 @@ export function FloatingTabBar({
                   >
                     <Ionicons
                       name={config.activeIcon}
-                      size={23}
+                      size={26}
                       color={Colors.forestOlive}
                     />
                   </Animated.View>
 
-                  {/* Inactive Icon: Outline in Muted Olive */}
+                  {/* Inactive Icon: Outline in Deep Muted Olive with Optical Bolding */}
                   <Animated.View
                     style={[
                       StyleSheet.absoluteFill,
@@ -357,8 +357,9 @@ export function FloatingTabBar({
                   >
                     <Ionicons
                       name={config.inactiveIcon}
-                      size={23}
-                      color="#7A8A68"
+                      size={26}
+                      color="#384725"
+                      style={styles.inactiveIconGlyph}
                     />
                   </Animated.View>
                 </Animated.View>
@@ -437,13 +438,18 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   iconWrapper: {
-    width: 32,
-    height: 32,
+    width: 36,
+    height: 36,
     alignItems: "center",
     justifyContent: "center",
   },
   iconCenter: {
     alignItems: "center",
     justifyContent: "center",
+  },
+  inactiveIconGlyph: {
+    textShadowColor: "rgba(56, 71, 37, 0.35)",
+    textShadowOffset: { width: 0, height: 0 },
+    textShadowRadius: 0.8,
   },
 });
