@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, Feather } from "@expo/vector-icons";
 import { Colors } from "../constants/colors";
 import { Fonts, DotoWeight } from "../constants/fonts";
 
@@ -17,7 +17,8 @@ export interface ScreenPlaceholderProps {
   subtitle?: string;
   badge?: string;
   badgeColor?: string;
-  icon?: keyof typeof Ionicons.glyphMap;
+  icon?: string;
+  iconFamily?: "ionicons" | "feather";
   iconBgColor?: string;
   headerTitle?: string;
   headerTitleColor?: string;
@@ -30,6 +31,7 @@ export function ScreenPlaceholder({
   badge,
   badgeColor = Colors.primary,
   icon,
+  iconFamily = "ionicons",
   iconBgColor = "#EBF5D4",
   headerTitle,
   headerTitleColor = Colors.primary,
@@ -84,11 +86,19 @@ export function ScreenPlaceholder({
               ]}
               accessible={false}
             >
-              <Ionicons
-                name={icon}
-                size={isTablet ? 38 : 32}
-                color={Colors.forestOlive}
-              />
+              {iconFamily === "feather" ? (
+                <Feather
+                  name={icon as keyof typeof Feather.glyphMap}
+                  size={isTablet ? 38 : 32}
+                  color={Colors.forestOlive}
+                />
+              ) : (
+                <Ionicons
+                  name={icon as keyof typeof Ionicons.glyphMap}
+                  size={isTablet ? 38 : 32}
+                  color={Colors.forestOlive}
+                />
+              )}
             </View>
           )}
 

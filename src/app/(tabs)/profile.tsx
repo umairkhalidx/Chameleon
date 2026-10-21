@@ -9,7 +9,8 @@ export default function ProfileScreen() {
       subtitle="User profile, account credentials, and settings"
       badge="Account"
       badgeColor={Colors.border}
-      icon="person"
+      icon="user"
+      iconFamily="feather"
       iconBgColor="#EFF6E8"
     />
   );

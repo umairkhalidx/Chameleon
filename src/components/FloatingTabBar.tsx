@@ -9,7 +9,7 @@ import {
   useWindowDimensions,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, Feather } from "@expo/vector-icons";
 import type { Tabs } from "expo-router";
 import { Colors } from "../constants/colors";
 
@@ -17,8 +17,9 @@ type TabsTabBarFn = NonNullable<React.ComponentProps<typeof Tabs>["tabBar"]>;
 export type FloatingTabBarProps = Parameters<TabsTabBarFn>[0];
 
 interface TabConfig {
-  activeIcon: keyof typeof Ionicons.glyphMap;
-  inactiveIcon: keyof typeof Ionicons.glyphMap;
+  activeIcon: string;
+  inactiveIcon: string;
+  iconFamily: "ionicons" | "feather";
   label: string;
 }
 
@@ -26,21 +27,25 @@ const TAB_CONFIGS: Record<string, TabConfig> = {
   index: {
     activeIcon: "chatbubbles",
     inactiveIcon: "chatbubbles-outline",
+    iconFamily: "ionicons",
     label: "Chats",
   },
   communities: {
     activeIcon: "people",
     inactiveIcon: "people-outline",
+    iconFamily: "ionicons",
     label: "Communities",
   },
   configuration: {
     activeIcon: "options",
     inactiveIcon: "options-outline",
+    iconFamily: "ionicons",
     label: "Configuration",
   },
   profile: {
-    activeIcon: "person",
-    inactiveIcon: "person-outline",
+    activeIcon: "user",
+    inactiveIcon: "user",
+    iconFamily: "feather",
     label: "Profile",
   },
 };
@@ -61,14 +66,13 @@ export function FloatingTabBar({
   const activeIndex = state.index;
   const tabCount = state.routes.length;
 
-  // Responsive floating geometry (comfortable max-width on tablets)
+  // Responsive compact floating dock geometry (balanced spacing between icons)
   const isTablet = windowWidth >= 768;
-  const maxFloatingWidth = isTablet ? 420 : 370;
-  const horizontalMargin = isTablet
-    ? Math.max((windowWidth - maxFloatingWidth) / 2, 24)
-    : 20;
+  const targetBarWidth = isTablet ? 360 : 312;
+  const barWidthConstrained = Math.min(windowWidth - 48, targetBarWidth);
+  const horizontalMargin = (windowWidth - barWidthConstrained) / 2;
 
-  const initialWidth = windowWidth - horizontalMargin * 2;
+  const initialWidth = barWidthConstrained;
   const initialTabWidth = initialWidth / tabCount;
 
   const [barWidth, setBarWidth] = useState(initialWidth);
@@ -332,7 +336,7 @@ export function FloatingTabBar({
                     },
                   ]}
                 >
-                  {/* Active Icon: Filled in Deep Forest Olive */}
+                  {/* Active Icon: Filled/Selected in Deep Forest Olive */}
                   <Animated.View
                     style={[
                       StyleSheet.absoluteFill,
@@ -340,11 +344,19 @@ export function FloatingTabBar({
                       { opacity: activeOpacities[index] },
                     ]}
                   >
-                    <Ionicons
-                      name={config.activeIcon}
-                      size={26}
-                      color={Colors.forestOlive}
-                    />
+                    {config.iconFamily === "feather" ? (
+                      <Feather
+                        name={config.activeIcon as keyof typeof Feather.glyphMap}
+                        size={25}
+                        color={Colors.forestOlive}
+                      />
+                    ) : (
+                      <Ionicons
+                        name={config.activeIcon as keyof typeof Ionicons.glyphMap}
+                        size={26}
+                        color={Colors.forestOlive}
+                      />
+                    )}
                   </Animated.View>
 
                   {/* Inactive Icon: Outline in Deep Muted Olive with Optical Bolding */}
@@ -355,12 +367,21 @@ export function FloatingTabBar({
                       { opacity: inactiveOpacities[index] },
                     ]}
                   >
-                    <Ionicons
-                      name={config.inactiveIcon}
-                      size={26}
-                      color="#384725"
-                      style={styles.inactiveIconGlyph}
-                    />
+                    {config.iconFamily === "feather" ? (
+                      <Feather
+                        name={config.inactiveIcon as keyof typeof Feather.glyphMap}
+                        size={25}
+                        color="#384725"
+                        style={styles.inactiveIconGlyph}
+                      />
+                    ) : (
+                      <Ionicons
+                        name={config.inactiveIcon as keyof typeof Ionicons.glyphMap}
+                        size={26}
+                        color="#384725"
+                        style={styles.inactiveIconGlyph}
+                      />
+                    )}
                   </Animated.View>
                 </Animated.View>
               </Animated.View>
