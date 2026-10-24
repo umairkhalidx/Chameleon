@@ -1,4 +1,3 @@
-import React from "react";
 import {
   StyleSheet,
   Text,
@@ -6,7 +5,7 @@ import {
   useWindowDimensions,
   Platform,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 import { Ionicons, Feather } from "@expo/vector-icons";
 import { Colors } from "../constants/colors";
@@ -23,6 +22,8 @@ export interface ScreenPlaceholderProps {
   headerTitle?: string;
   headerTitleColor?: string;
   headerFontWeight?: DotoWeight;
+  children?: React.ReactNode;
+  contentPaddingBottom?: number;
 }
 
 export function ScreenPlaceholder({
@@ -36,9 +37,15 @@ export function ScreenPlaceholder({
   headerTitle,
   headerTitleColor = Colors.primary,
   headerFontWeight = "black",
+  children,
+  contentPaddingBottom,
 }: ScreenPlaceholderProps) {
   const { width } = useWindowDimensions();
+  const insets = useSafeAreaInsets();
   const isTablet = width >= 768;
+
+  // Floating tab bar takes 64dp + bottom position (insets.bottom + 8~16)
+  const defaultBottomPadding = 64 + Math.max(insets.bottom, 16) + 20;
 
   return (
     <SafeAreaView style={styles.safeArea} edges={["top", "left", "right"]}>
@@ -62,7 +69,14 @@ export function ScreenPlaceholder({
           </Text>
         </View>
       ) : null}
-      <View style={styles.container}>
+      <View
+        style={[
+          styles.container,
+          {
+            paddingBottom: contentPaddingBottom ?? defaultBottomPadding,
+          },
+        ]}
+      >
         <View
           style={[
             styles.card,
@@ -129,6 +143,8 @@ export function ScreenPlaceholder({
               {subtitle}
             </Text>
           )}
+
+          {children}
         </View>
       </View>
     </SafeAreaView>
@@ -150,13 +166,13 @@ const styles = StyleSheet.create({
   },
   topHeaderTitle: {
     textAlign: "center",
+    includeFontPadding: false,
   },
   container: {
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
     paddingHorizontal: 20,
-    paddingBottom: 72,
     backgroundColor: Colors.background,
   },
   card: {
@@ -197,12 +213,14 @@ const styles = StyleSheet.create({
     color: Colors.forestOlive,
     letterSpacing: 0.6,
     textTransform: "uppercase",
+    includeFontPadding: false,
   },
   title: {
     fontFamily: Fonts.doto.bold,
     color: Colors.textPrimary,
     textAlign: "center",
     letterSpacing: 0.5,
+    includeFontPadding: false,
   },
   subtitle: {
     marginTop: 10,
